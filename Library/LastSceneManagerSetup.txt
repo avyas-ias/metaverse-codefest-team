@@ -1,0 +1,5 @@
+sceneSetups:
+- path: Assets/codefest_city_model/scene/DemoScene.unity
+  isLoaded: 1
+  isActive: 1
+  isSubScene: 0
