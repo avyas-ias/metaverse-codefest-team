@@ -43,6 +43,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        private Vector3 city_fps_starter = new Vector3(1489.63879f,72.651001f,-2395.80835f);
+        private Vector3 town_fps_starter = new Vector3(1380f,18.5f,951.5f);
+        private Vector3 platform_fps_starter = new Vector3(-409f,750f,-1614f);
+
         // Use this for initialization
         private void Start()
         {
@@ -61,7 +65,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         // Update is called once per frame
         private void Update()
-        {
+        {   
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -245,6 +249,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             Rigidbody body = hit.collider.attachedRigidbody;
             //dont move the rigidbody if the character is on top of it
+            // Debug.Log("Collisding with" + hit.collider.gameObject.name);
+            if(hit.collider.gameObject.name.Equals("picture3")){
+                // Debug.Log("teleporting !");
+                // m_CharacterController.transform.position = new Vector3(-78.7058105f,9.99665833f,154.828369f);
+                // UnityEditor.TransformWorldPlacementJSON:{"position":{"x":1380.407958984375,"y":18.290468215942384,"z":931.1295776367188},"rotation":{"x":0.0,"y":0.3691137135028839,"z":0.0,"w":-0.9293842911720276},"scale":{"x":1.0,"y":1.0,"z":1.0}}
+
+                m_CharacterController.transform.position = town_fps_starter;
+                m_CharacterController.height = 10;
+                m_WalkSpeed = 10;
+            } else if(hit.collider.gameObject.name.Equals("picture4")) {
+                m_CharacterController.transform.position = city_fps_starter;
+                m_CharacterController.height = 0.3f;
+                m_WalkSpeed = 5;
+            }
+
             if (m_CollisionFlags == CollisionFlags.Below)
             {
                 return;
