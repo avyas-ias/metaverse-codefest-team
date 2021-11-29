@@ -1,9 +1,5 @@
 sceneSetups:
-- path: Assets/CITY_MODEL/scene/City_scene.unity
+- path: Assets/CITY_MODEL/scene/OfficeScene.unity
   isLoaded: 1
   isActive: 1
-  isSubScene: 0
-- path: Assets/TOWN_MODEL/Town_scene.unity
-  isLoaded: 1
-  isActive: 0
   isSubScene: 0

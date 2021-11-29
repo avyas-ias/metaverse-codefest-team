@@ -1,0 +1,39 @@
+﻿<Properties StartupConfiguration="{421415A0-CB0D-2C80-262F-950171E22121}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/IASAdComp.cs">
+    <Files>
+      <File FileName="Assets/IASAdComp.cs" Line="35" Column="1" />
+      <File FileName="Assets/Standard Assets/Characters/FirstPersonCharacter/Scripts/FirstPersonController.cs" />
+      <File FileName="Assets/PlayerEyeComponent.cs" />
+      <File FileName="Assets/SlidesHandler.cs" Line="18" Column="25" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="metaverse-codefest-team" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="IASAdComp.cs" selected="True" />
+            </Node>
+            <Node name="Assembly-CSharp-firstpass" expanded="True">
+              <Node name="Assets" expanded="True">
+                <Node name="Standard Assets" expanded="True">
+                  <Node name="Characters" expanded="True">
+                    <Node name="FirstPersonCharacter" expanded="True">
+                      <Node name="Scripts" expanded="True" />
+                    </Node>
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="064a5c64-9c8e-4359-804e-129a38795f8e" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
