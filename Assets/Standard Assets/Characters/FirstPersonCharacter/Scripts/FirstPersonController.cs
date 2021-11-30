@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 #pragma warning disable 618, 649
 namespace UnityStandardAssets.Characters.FirstPerson
 {
-    [RequireComponent(typeof(CharacterController))]
-    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof (CharacterController))]
+    [RequireComponent(typeof (AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
         [SerializeField] private bool m_IsWalking;
@@ -34,7 +34,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_YRotation;
         private Vector2 m_Input;
         private Vector3 m_MoveDir = Vector3.zero;
-        private CharacterController m_CharacterController;
+        public CharacterController m_CharacterController;
         private CollisionFlags m_CollisionFlags;
         private bool m_PreviouslyGrounded;
         private Vector3 m_OriginalCameraPosition;
@@ -43,9 +43,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
-        private Vector3 city_fps_starter = new Vector3(1489.63879f, 72.651001f, -2395.80835f);
-        private Vector3 town_fps_starter = new Vector3(1380f, 18.5f, 951.5f);
-        private Vector3 platform_fps_starter = new Vector3(-409f, 750f, -1614f);
+        private Vector3 city_fps_starter = new Vector3(1489.63879f,72.651001f,-2395.80835f);
+        private Vector3 town_fps_starter = new Vector3(1380f,18.5f,951.5f);
+        private Vector3 platform_fps_starter = new Vector3(-409f,750f,-1614f);
+
+        
 
         // Use this for initialization
         private void Start()
@@ -56,16 +58,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
             m_StepCycle = 0f;
-            m_NextStep = m_StepCycle / 2f;
+            m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
-            m_MouseLook.Init(transform, m_Camera.transform);
+			m_MouseLook.Init(transform , m_Camera.transform);
         }
 
 
         // Update is called once per frame
         private void Update()
-        {
+        {   
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -86,10 +88,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
-
         }
-
-        
 
 
         private void PlayLandingSound()
@@ -105,16 +104,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
-            Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
+            Vector3 desiredMove = transform.forward*m_Input.y + transform.right*m_Input.x;
 
             // get a normal for the surface that is being touched to move along it
             RaycastHit hitInfo;
             Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
-                               m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+                               m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            m_MoveDir.x = desiredMove.x * speed;
-            m_MoveDir.z = desiredMove.z * speed;
+            m_MoveDir.x = desiredMove.x*speed;
+            m_MoveDir.z = desiredMove.z*speed;
 
 
             if (m_CharacterController.isGrounded)
@@ -131,9 +130,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else
             {
-                m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
+                m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
             }
-            m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
+            m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
@@ -153,7 +152,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             if (m_CharacterController.velocity.sqrMagnitude > 0 && (m_Input.x != 0 || m_Input.y != 0))
             {
-                m_StepCycle += (m_CharacterController.velocity.magnitude + (speed * (m_IsWalking ? 1f : m_RunstepLenghten))) *
+                m_StepCycle += (m_CharacterController.velocity.magnitude + (speed*(m_IsWalking ? 1f : m_RunstepLenghten)))*
                              Time.fixedDeltaTime;
             }
 
@@ -196,7 +195,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_Camera.transform.localPosition =
                     m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
-                                      (speed * (m_IsWalking ? 1f : m_RunstepLenghten)));
+                                      (speed*(m_IsWalking ? 1f : m_RunstepLenghten)));
                 newCameraPosition = m_Camera.transform.localPosition;
                 newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
             }
@@ -244,7 +243,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation(transform, m_Camera.transform);
+            m_MouseLook.LookRotation (transform, m_Camera.transform);
         }
 
 
@@ -253,8 +252,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             Rigidbody body = hit.collider.attachedRigidbody;
             //dont move the rigidbody if the character is on top of it
             // Debug.Log("Collisding with" + hit.collider.gameObject.name);
-            if (hit.collider.gameObject.name.Equals("picture3"))
-            {
+            if(hit.collider.gameObject.name.Equals("picture3")){
                 // Debug.Log("teleporting !");
                 // m_CharacterController.transform.position = new Vector3(-78.7058105f,9.99665833f,154.828369f);
                 // UnityEditor.TransformWorldPlacementJSON:{"position":{"x":1380.407958984375,"y":18.290468215942384,"z":931.1295776367188},"rotation":{"x":0.0,"y":0.3691137135028839,"z":0.0,"w":-0.9293842911720276},"scale":{"x":1.0,"y":1.0,"z":1.0}}
@@ -262,9 +260,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_CharacterController.transform.position = town_fps_starter;
                 m_CharacterController.height = 10;
                 m_WalkSpeed = 10;
-            }
-            else if (hit.collider.gameObject.name.Equals("picture4"))
-            {
+            } else if(hit.collider.gameObject.name.Equals("picture4")) {
                 m_CharacterController.transform.position = city_fps_starter;
                 m_CharacterController.height = 0.3f;
                 m_WalkSpeed = 5;
@@ -279,7 +275,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 return;
             }
-            body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
+            body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
     }
 }

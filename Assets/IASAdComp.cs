@@ -82,7 +82,7 @@ public class IASAdComp : MonoBehaviour
         Debug.Log("I, " + name + ", was viewed by ");// + player.transform.name);
 
         // Notify Ad server async
-        StartCoroutine("NotifyAdViewedToServer");
+        // StartCoroutine("NotifyAdViewedToServer");
     }
 
 
@@ -91,23 +91,23 @@ public class IASAdComp : MonoBehaviour
         m_Renderer = GetComponent<Renderer>();
         m_Camera = FindObjectOfType<Camera>();
 
-        StartCoroutine("GetAdToDisplay");
+        // StartCoroutine("GetAdToDisplay");
     }
 
-    private void checkAdVisibility()
-    {
-        Vector3 screenPos = m_Camera.WorldToScreenPoint(transform.position);
-        bool onScreen = screenPos.x > 0f && screenPos.x < Screen.width && screenPos.y > 0f && screenPos.y < Screen.height;
+    // private void checkAdVisibility()
+    // {
+    //     Vector3 screenPos = m_Camera.WorldToScreenPoint(transform.position);
+    //     bool onScreen = screenPos.x > 0f && screenPos.x < Screen.width && screenPos.y > 0f && screenPos.y < Screen.height;
 
-        if (onScreen && m_Renderer.isVisible)
-        {
-            StartCoroutine("NotifyAdViewedToServer");
-        }
-        else
-        {
-            //NotVisible
-        }
-    }
+    //     if (onScreen && m_Renderer.isVisible)
+    //     {
+    //         StartCoroutine("NotifyAdViewedToServer");
+    //     }
+    //     else
+    //     {
+    //         //NotVisible
+    //     }
+    // }
 
 
 

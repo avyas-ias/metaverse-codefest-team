@@ -29,7 +29,7 @@ public class PlayerEyeComponent : MonoBehaviour
     {
         while(true)
         {
-            checkForAd();
+            // checkForAd();
             yield return new WaitForSeconds(IAS_AD_CHECK_N_SEC);
         }
     }
