@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
@@ -47,6 +48,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 town_fps_starter = new Vector3(1380f,18.5f,951.5f);
         private Vector3 platform_fps_starter = new Vector3(-409f,750f,-1614f);
 
+        private List<string> slides = new List<string>{"s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11"};
+        private List<GameObject> slideObj = new List<GameObject>();
+        private int slideCounter = -1;
+
         
 
         // Use this for initialization
@@ -62,12 +67,43 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+
+            // GameObject s1 = GameObject.Find("s1");
+            // GameObject s2 = GameObject.Find("s2");
+            // GameObject s3 = GameObject.Find("s3");
+            // GameObject s4 = GameObject.Find("s4");
+            // GameObject s5 = GameObject.Find("s5");
+            // GameObject s6 = GameObject.Find("s6");
+            // GameObject s7 = GameObject.Find("s7");
+            // GameObject s8 = GameObject.Find("s8");
+            // GameObject s9 = GameObject.Find("s9");
+            // GameObject s10 = GameObject.Find("s10");
+            // GameObject s11 = GameObject.Find("s11");
+
+            for(int i=0;i<=10;i++){
+                slideObj.Add(GameObject.Find(slides[i]));
+                if(i>0)
+                    slideObj[i].SetActive(false);
+            }
+            // slideObj[0].SetActive(true);
         }
 
 
         // Update is called once per frame
         private void Update()
         {   
+            GameObject slide;
+            if (Input.GetKeyUp(KeyCode.E))
+            {
+                slideCounter += 1;
+                // slide=GameObject.Find(slides[slideCounter]);
+                slide=slideObj[slideCounter];
+                slide.SetActive(false);
+                slideObj[slideCounter+1].SetActive(true);
+                if(slideCounter>=10)
+                    slideCounter = -1;
+            }
+
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)

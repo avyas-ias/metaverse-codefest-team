@@ -14,8 +14,8 @@ public class AdController {
 
     @PostMapping(value = "/ad", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public AdResponseDTO getSession(@RequestBody final AdPublisherContextDTO contextDto) {
-        log.info("Serving ad to {}", contextDto.getPublisherId());
-        log.info("Context to serve: {}", contextDto);
+//        log.info("Serving ad to {}", contextDto.getPublisherId());
+//        log.info("Context to serve: {}", contextDto);
         return new AdResponseDTO("1", "");
     }
 

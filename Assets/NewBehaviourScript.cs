@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityStandardAssets.Characters.FirstPerson;
 
 
@@ -19,6 +20,9 @@ public class NewBehaviourScript : MonoBehaviour
     DateTime viewTimeStart = new DateTime(0);
     // UnityEngine.Camera cam1 = FirstPersonController();
     // Use this for initialization
+    string IAS_AD_SERVER_BASE_URI = "http://localhost:9080/dt";
+
+
     void Start()
     {
         m_Renderer = GetComponent<Renderer>();
@@ -80,8 +84,6 @@ public class NewBehaviourScript : MonoBehaviour
                     tempTimesViewed = 0;
                 }
                 viewTimeStart = DateTime.Now;
-                // mylist.Add(viewTimeStart,timesViewed);
-                // List<(DateTime startTime, int timesViewed)> temp = new List<(DateTime startTime, int timesViewed)>(){ get; set; }
                 isInViewMap[placementName] = (viewTimeStart,tempTimesViewed+=1);
                 isInViewList.Add(placementName);
                 Debug.Log("visible" + m_Renderer.name);
@@ -93,10 +95,17 @@ public class NewBehaviourScript : MonoBehaviour
                 viewTimeDelta = DateTime.Now.Subtract(viewTimeStart).TotalSeconds;
                 if(viewTimeDelta > 0){
                     Debug.Log(String.Format("{2} => Time Delta = {0} | Viewed {1}X",viewTimeDelta.ToString(),isInViewMap[placementName].timesViewed.ToString(),placementName));
+
+                    // sending log to server
+                    string uri = String.Format("{0}/report/{1}/{2}",IAS_AD_SERVER_BASE_URI,placementName,viewTimeDelta);
+                    UnityWebRequest req = UnityWebRequest.Get(uri);
+                    req.SendWebRequest();
+
                 }
                 viewTimeStart = new DateTime(0);
                 isInView = false;
                 isInViewList.Remove(placementName);
+
             }
         }
     }
