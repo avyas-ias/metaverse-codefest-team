@@ -32,7 +32,7 @@ public class ReportController {
      */
     @GetMapping("/report/{sessionId}/{deltaTime}")
     public void getSession(@PathVariable final String sessionId, @PathVariable final Float deltaTime) {
-        log.info("Reporting ad-notify beat from session: {}", sessionId);
+//        log.info("Reporting ad-notify beat from session: {}", sessionId);
 
         final AdReportDTO report;
 
