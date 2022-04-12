@@ -82,7 +82,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             for(int i=0;i<=10;i++){
                 slideObj.Add(GameObject.Find(slides[i]));
-                if(i>0)
+                // if(i>-1)
                     slideObj[i].SetActive(false);
             }
             // slideObj[0].SetActive(true);
@@ -93,16 +93,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {   
             GameObject slide;
-            if (Input.GetKeyUp(KeyCode.E))
-            {
-                slideCounter += 1;
-                // slide=GameObject.Find(slides[slideCounter]);
-                slide=slideObj[slideCounter];
-                slide.SetActive(false);
-                slideObj[slideCounter+1].SetActive(true);
-                if(slideCounter>=10)
-                    slideCounter = -1;
-            }
+            // if (Input.GetKeyUp(KeyCode.E))
+            // {
+            //     slideCounter += 1;
+            //     // slide=GameObject.Find(slides[slideCounter]);
+            //     slide=slideObj[slideCounter];
+            //     slide.SetActive(false);
+            //     slideObj[slideCounter+1].SetActive(true);
+            //     if(slideCounter>=10)
+            //         slideCounter = -1;
+            // }
 
             RotateView();
             // the jump state needs to read here to make sure it is not missed
