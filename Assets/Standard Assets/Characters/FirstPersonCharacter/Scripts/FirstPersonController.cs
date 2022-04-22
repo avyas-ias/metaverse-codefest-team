@@ -50,7 +50,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private List<string> slides = new List<string>{"s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11"};
         private List<GameObject> slideObj = new List<GameObject>();
+
+        private List<string> ads = new List<string>{"ad1","ad2","ad3","ad4","ad5","ad6","ad7","ad8","ad9","ad10","ad11","ad12","ad13","ad14"};
+        private List<GameObject> adObj = new List<GameObject>();
+
         private int slideCounter = -1;
+        private int adCounter = 0;
 
         
 
@@ -80,9 +85,22 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // GameObject s10 = GameObject.Find("s10");
             // GameObject s11 = GameObject.Find("s11");
 
+            GameObject.Find(ads[0]).SetActive(false);
+
+            for(int i=0;i<ads.Count;i++){
+                adObj.Add(GameObject.Find(ads[i]));
+                // if(i>0)
+                try{
+                    adObj[i].SetActive(false);
+                } catch (Exception e) {
+                    Debug.Log("...");
+                }
+                // adObj[i].material.color.a = 0.0f;
+            }
+            
             for(int i=0;i<=10;i++){
                 slideObj.Add(GameObject.Find(slides[i]));
-                if(i>0)
+                // if(i>0)
                     slideObj[i].SetActive(false);
             }
             // slideObj[0].SetActive(true);
@@ -93,15 +111,31 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {   
             GameObject slide;
-            if (Input.GetKeyUp(KeyCode.E))
+
+            if(Input.GetKeyUp(KeyCode.U)){
+                if(adCounter>0){
+                    adObj[adCounter-1].SetActive(false);
+                    adObj[adCounter-2].SetActive(false);
+                    adCounter -= 2;
+                }
+            }
+
+            if (Input.GetKeyUp(KeyCode.Alpha1) || Input.GetKeyUp(KeyCode.Alpha2))
             {
-                slideCounter += 1;
-                // slide=GameObject.Find(slides[slideCounter]);
-                slide=slideObj[slideCounter];
-                slide.SetActive(false);
-                slideObj[slideCounter+1].SetActive(true);
-                if(slideCounter>=10)
-                    slideCounter = -1;
+                if(Input.GetKeyUp(KeyCode.Alpha1)){
+                    adObj[adCounter].SetActive(true);
+                } else if(Input.GetKeyUp(KeyCode.Alpha2)) {
+                    adObj[adCounter+1].SetActive(true);
+                }
+                adCounter += 2;
+
+                // slideCounter += 1;
+                // // slide=GameObject.Find(slides[slideCounter]);
+                // slide=slideObj[slideCounter];
+                // slide.SetActive(false);
+                // slideObj[slideCounter+1].SetActive(true);
+                // if(slideCounter>=10)
+                //     slideCounter = -1;
             }
 
             RotateView();
