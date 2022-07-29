@@ -40,6 +40,9 @@ class App extends Component {
       // tableData:[]
     }
     setInterval(() => {
+      this.updateGraph();
+    }, 1000);
+    setInterval(() => {
       this.getViewabilityData()
       // this.getSegmentData()
     }, 5000)
@@ -301,6 +304,7 @@ class App extends Component {
                                 ],
                                 borderWidth: 2,
                                 // data: [0.8, 0.1, 0.2, 0.7, 1, 0.4, 0.6, 0.5, 0.6, 0.5, 0.9],
+                                // data: [Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(),Math.random()],
                                 data: [...this.state.score]
                               },
                             ],
@@ -329,6 +333,13 @@ class App extends Component {
         </BrowserRouter>
       </IASStoreProvider>
     )
+  }
+
+  updateGraph = () => {
+    let graphData = [Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random(),Math.random()]
+    this.setState({
+      score:graphData,
+    })
   }
 
   getViewabilityData = () => {
