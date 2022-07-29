@@ -1,6 +1,9 @@
 .App {
-  text-align: center;
-  background-color: #f3f9fa;
+  max-width: 1700px;
+  position: relative;
+  padding: 0 80px;
+  min-height: 225px;
+  background-color: #F3F9FA;
 }
 .dash-card-header {
   margin-bottom: 5%;

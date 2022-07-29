@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import ias_logo from "./ias_logo.jpg";
-import "./App.css";
-import "semantic-ui-css/semantic.min.css";
+import React, { Component } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import './App.css'
+import 'semantic-ui-css/semantic.min.css'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,299 +9,388 @@ import {
   BarElement,
   Title,
   Tooltip,
+  BarController,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+} from 'chart.js'
 import {
-  Container,
-  Image,
-  Icon,
-  Header,
-  Card,
-  Divider,
-  Statistic,
-  Table,
-  Grid,
-  Segment,
-} from "semantic-ui-react";
+  IASCardBody,
+  IASCard,
+  IASCardHeader,
+  IASCardRow,
+  IASStoreProvider,
+  IASGrid,
+  IASGridHeader,
+  IASGridBody,
+  IASNavLayout,
+  IASChip,
+} from 'react-core'
+import { Bar } from 'react-chartjs-2'
 class App extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       items: [],
-      logs: [],
-      sessionIds: [],
-      viewTime: [],
-      viewCount: [],
-    };
+      segdata: [],
+      viewData: [],
+      // loading_seg: true,
+      loading_view: true,
+      chartData: [],
+      lablesData: [],
+      score: [],
+      // tableData:[]
+    }
     setInterval(() => {
-      this.getCardData();
-      this.getLogData();
-    }, 1000);
-
+      this.getViewabilityData()
+      // this.getSegmentData()
+    }, 5000)
     ChartJS.register(
       CategoryScale,
       LinearScale,
       BarElement,
+      BarController,
       Title,
       Tooltip,
-      Legend
-    );
+      Legend,
+    ) 
   }
+
+  // tableData = 
 
   render() {
     return (
-      <div className="App">
-        <Container
-          fluid
-          style={{
-            backgroundColor: "#013148",
-            textAlign: "left",
-          }}
-        >
-          <Header as="h1">
-            <Image src={ias_logo} style={{ height: "8%", width: "8%" }} />
-            <Header.Content style={{ color: "white", marginLeft: "30%" }}>
-              Metaverse Dashboard
-            </Header.Content>
-          </Header>
-        </Container>
-        {/* </div> */}
-        <Divider hidden />
-
-        <div style={{ padding: "2%" }} textAlign="center">
-          <Card.Group centered itemsPerRow={5} items={this.state.items} />
-          <Divider hidden />
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={8}>
-                <Card fluid>
-                  <Bar
-                    options={{
-                      indexAxis: "y",
-                      responsive: true,
-                      plugins: {
-                        legend: {
-                          position: "right",
-                          display: false,
-                        },
-                        title: {
-                          display: true,
-                          text: "Avg View time vs Placement name",
-                        },
-                      },
-                      scales: {
-                        yAxes: [
+      <IASStoreProvider>
+        <BrowserRouter basename="" routes={[]}>
+          {/* <h1>{this.state}</h1> */}
+          <IASNavLayout basename="" routes={[]}>
+            <div style={{ margin: '10px 2%' }}>
+              <div className="ias-page-header">
+                <div className="ias-header-title-container">
+                  <h2>IAS IN METAVERSE</h2>
+                </div>
+                <div className="ias-header-inputs-container"></div>
+              </div>
+              <div style={{ margin: '20px 0' }}>
+                <IASCardRow cardsPerRow="1">
+                  <IASCard>
+                    <IASCardHeader title="Viewability Metrics"></IASCardHeader>
+                    <IASCardBody>
+                      <IASGrid
+                        rowHeight={60}
+                        columns={[
                           {
-                            scaleLabel: {
+                            Header: 'Advertisement ID',
+                            accessor: 'id',
+                          },
+                          {
+                            Header: 'Time in View (in Sec)',
+                            accessor: 'viewability',
+                          },
+                          {
+                            Header: 'Cumulative Viewability (> 1 Sec)',
+                            accessor: 'cumulative',
+                            Cell: ({ value }) => (
+                              <div>
+                                {value < 1 ? (
+                                  <IASChip
+                                    chipType="status"
+                                    label={value}
+                                    theme="error"
+                                  />
+                                ) : (
+                                  value
+                                )}
+                              </div>
+                            ),
+                          },
+                          {
+                            Header: 'Angle in View (< 55 degree)',
+                            accessor: 'angle',
+                            Cell: ({ value }) => (
+                              <div>
+                                {value > 55 ? (
+                                  <IASChip
+                                    chipType="status"
+                                    label={value}
+                                    theme="error"
+                                  />
+                                ) : (
+                                  value
+                                )}
+                              </div>
+                            ),
+                          },
+                          {
+                            Header: ' Real Estate (> 1 Pixel percentage)',
+                            accessor: 'pixel',
+                            Cell: ({ value }) => (
+                              <div>
+                                {value < 1.1 ? (
+                                  <IASChip
+                                    chipType="status"
+                                    label={value}
+                                    theme="error"
+                                  />
+                                ) : (
+                                  value
+                                )}
+                              </div>
+                            ),
+                          },
+                          {
+                            Header: 'Viewable(True/False)',
+                            accessor: 'viewable',
+                            Cell: ({ value }) => (
+                              <div>
+                                {value == 'true' ? (
+                                  <IASChip
+                                    chipType="status"
+                                    label={value}
+                                    theme="built"
+                                  />
+                                ) : (
+                                  <IASChip
+                                    chipType="status"
+                                    label={value}
+                                    theme="error"
+                                  />
+                                )}
+                              </div>
+                            ),
+                          },
+                        ]}
+                        height={350}
+                        isGridLoading={this.state.loading_view}
+                        items={[...this.state.viewData]}
+                        onChange={function noRefCheck() {}}
+                      >
+                        <IASGridHeader />
+                        <IASGridBody />
+                      </IASGrid>
+                    </IASCardBody>
+                  </IASCard>
+                </IASCardRow>
+              </div>
+
+              <IASCardRow cardsPerRow="1">
+                <IASCard>
+                  <IASCardHeader title="Contexual Segment Metrics"></IASCardHeader>
+                  <IASCardBody>
+                    <IASGrid
+                      rowHeight={60}
+                      columns={[
+                        {
+                          Header: 'Object Name',
+                          accessor: 'id',
+                          width: 80,
+                        },
+                        {
+                          Header: 'Targeted Segments',
+                          accessor: 'segment_targeted',
+                          width: 450,
+                          Cell: ({ value }) => (
+                            <div
+                              style={{
+                                display: 'flex',
+                                overflowX: 'scroll',
+                                scrollbarWidth: 'none',
+                                msOverflowStyle: 'none',
+                                scrollBehavior: 'smooth',
+
+                                margin: 6,
+                              }}
+                            >
+                              {value?.map((targeting, _idx) => {
+                                return (
+                                  <IASChip
+                                    active
+                                    key={_idx}
+                                    chipType="status"
+                                    label={targeting || 'NA'}
+                                    theme="built"
+                                    style={{ width: 100 }}
+                                  />
+                                )
+                              })}
+                            </div>
+                          ),
+                        },
+                        {
+                          Header: 'Avoided Segments',
+                          accessor: 'segment_avoided',
+                          width: 150,
+                          Cell: ({ value }) => (
+                            <div
+                              style={{
+                                display: 'flex',
+                                overflowX: 'scroll',
+                                scrollbarWidth: 'none',
+                                msOverflowStyle: 'none',
+                                margin: 6,
+                              }}
+                            >
+                              {value?.map((avoidance, _idx) => {
+                                return (
+                                  <IASChip
+                                    ready
+                                    key={_idx}
+                                    chipType="status"
+                                    isFixedWidth
+                                    label={avoidance || 'NA'}
+                                    theme="error"
+                                  />
+                                )
+                              })}
+                            </div>
+                          ),
+                        },
+                      ]}
+                      height={350}
+                      // isGridLoading={this.state.loading_seg}
+                      isGridLoading={this.state.loading_view}
+                      items={[...this.state.segdata]}
+                      onChange={function noRefCheck() {}}
+                    >
+                      <IASGridHeader />
+                      <IASGridBody />
+                    </IASGrid>
+                  </IASCardBody>
+                </IASCard>
+              </IASCardRow>
+              <div style={{ margin: '20px 0' }}>
+                <IASCardRow cardsPerRow="1">
+                  <IASCard>
+                    <IASCardHeader title="Brand safety Graph"></IASCardHeader>
+                    <IASCardBody>
+                      <Bar
+                        data={
+                          {
+                            labels: [
+                              'Spam',
+                              'Terrorism',
+                              'Crime',
+                              'Dim',
+                              'Obscenity',
+                              'Piracy',
+                              'Sensitive',
+                              'Arms',
+                              'Hate',
+                              'Adult',
+                              'Dteva',
+                            ],
+                            // labels: [...this.state.lablesData],
+                            datasets: [
+                              {
+                                // label: 'GARM categories',
+                                backgroundColor: [
+                                  'rgba(255, 99, 132, 0.2)',
+                                  'rgba(255, 159, 64, 0.2)',
+                                  'rgba(255, 205, 86, 0.2)',
+                                  'rgba(75, 192, 192, 0.2)',
+                                  'rgba(54, 162, 235, 0.2)',
+                                  'rgba(153, 102, 255, 0.2)',
+                                  'rgba(201, 203, 207, 0.2)',
+                                ],
+                                borderColor: [
+                                  'rgb(255, 99, 132)',
+                                  'rgb(255, 159, 64)',
+                                  'rgb(255, 205, 86)',
+                                  'rgb(75, 192, 192)',
+                                  'rgb(54, 162, 235)',
+                                  'rgb(153, 102, 255)',
+                                  'rgb(201, 203, 207)',
+                                ],
+                                borderWidth: 2,
+                                // data: [0.8, 0.1, 0.2, 0.7, 1, 0.4, 0.6, 0.5, 0.6, 0.5, 0.9],
+                                data: [...this.state.score]
+                              },
+                            ],
+                          }
+                        }
+                        options={{
+                          plugins: {
+                            title: {
                               display: true,
-                              labelString: "probability",
+                              // text: 'GARM categories',
+                              fontSize: 20,
+                            },
+                            legend: {
+                              display: false,
+                              position: 'bottom',
                             },
                           },
-                        ],
-                      },
-                    }}
-                    data={{
-                      labels: this.state.sessionIds,
-                      datasets: [
-                        {
-                          label: "Avg View Time",
-                          data: this.state.viewTime,
-                          backgroundColor: "rgba(78, 97, 223, 1)",
-                        },
-                      ],
-                    }}
-                  />
-                  <h6 style={{ color: "grey" }}>Placement Avg View Time</h6>
-                </Card>
-              </Grid.Column>
-              <Grid.Column width={8}>
-                <Card fluid>
-                  <Bar
-                    options={{
-                      indexAxis: "y",
-                      responsive: true,
-                      plugins: {
-                        legend: {
-                          position: "right",
-                          display: false,
-                        },
-                        title: {
-                          display: true,
-                          text: "Avg View Count vs Placement name",
-                        },
-                      },
-                      scales: {
-                        yAxes: [
-                          {
-                            scaleLabel: {
-                              display: true,
-                              labelString: "probability",
-                            },
-                          },
-                        ],
-                      },
-                    }}
-                    data={{
-                      labels: this.state.sessionIds,
-                      datasets: [
-                        {
-                          label: "Avg View Count",
-                          data: this.state.viewCount,
-                          backgroundColor: "rgba(78, 97, 223, 1)",
-                        },
-                      ],
-                    }}
-                  />
-                  <h6 style={{ color: "grey" }}>Placement Avg View Count</h6>
-                </Card>
-              </Grid.Column>
-            </Grid.Row>
-
-            <Table celled selectable>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Placement Name</Table.HeaderCell>
-                  <Table.HeaderCell>Time in view</Table.HeaderCell>
-                  <Table.HeaderCell>No. of views</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-
-              <Table.Body>{[...this.state.logs]}</Table.Body>
-            </Table>
-          </Grid>
-        </div>
-      </div>
-    );
+                        }}
+                      />
+                    </IASCardBody>
+                  </IASCard>
+                </IASCardRow>
+              </div>
+            </div>
+          </IASNavLayout>
+        </BrowserRouter>
+      </IASStoreProvider>
+    )
   }
 
-  getCardData = () => {
-    // fetch("http://localhost:9080/dt/report"
-    //   , { method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json', } })
-    //   .then(response => { return response.json() })
-    //   .then(data => {
-    let sessionReportsdata = [
-      {
-        sessionId: "Nike",
-        viewCount: 6,
-        avgViewTime: 6.0,
-      },
-      {
-        sessionId: "Microsoft",
-        viewCount: 7,
-        avgViewTime: 4.5,
-      },
-      {
-        sessionId: "Apple",
-        viewCount: 6,
-        avgViewTime: 2.9,
-      },
-      {
-        sessionId: "Meta",
-        viewCount: 6,
-        avgViewTime: 6.0,
-      },
-      {
-        sessionId: "IAS",
-        viewCount: 7,
-        avgViewTime: 4.5,
-      },
-      {
-        sessionId: "Twitter",
-        viewCount: 6,
-        avgViewTime: 2.9,
-      },
-      {
-        sessionId: "NVDIA",
-        viewCount: 6,
-        avgViewTime: 2.9,
-      },
-      {
-        sessionId: "Disney",
-        viewCount: 7,
-        avgViewTime: 4.5,
-      },
-      {
-        sessionId: "addidas",
-        viewCount: 6,
-        avgViewTime: 2.9,
-      },
-      {
-        sessionId: "H&M",
-        viewCount: 6,
-        avgViewTime: 2.9,
-      },
-    ];
-    let cnt = -1;
-    let tmp = sessionReportsdata.map((i) => {
-      var hexArray = ["#8099A5", "#325B6E", "#fcc201", "#4E61DF", "#01B7A9"];
-      cnt < 4 ? cnt++ : (cnt = 0);
-      var randomColor = hexArray[cnt];
-      return {
-        content: (
-          <Statistic size="mini" style={{ paddingBottom: "10%" }}>
-            <div
-              className="dash-card-header"
-              style={{ backgroundColor: randomColor }}
-            >
-              {i["sessionId"]}
-            </div>
-            <Statistic.Value>{i["viewCount"]}</Statistic.Value>
-            <Statistic.Label>no. of views</Statistic.Label>
-            <Divider />
-            <Statistic.Value>{i["avgViewTime"]}</Statistic.Value>
-            <Statistic.Label>avg. view time in secs</Statistic.Label>
-          </Statistic>
-        ),
-      };
-    });
+  getViewabilityData = () => {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    }
 
-    this.setState({
-      items: tmp,
-      sessionIds: sessionReportsdata.map((report) => report.sessionId),
-      viewTime: sessionReportsdata.map((report) => report.avgViewTime),
-      viewCount: sessionReportsdata.map((report) => report.viewCount),
-    });
-    // })
-    // .catch(error => console.log(error));
-  };
+    fetch('http://192.168.179.157:3000/report', requestOptions)
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
 
-  getLogData = () => {
-    // fetch("http://localhost:9080/dt/report"
-    //   , { method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json', } })
-    //   .then(response => { return response.json() })
-    //   .then(data => {
-    let logReportsdata = [
-      { sessionId: "Nike", viewCountTillNow: 7, viewTimeTillNow: 4.5 },
-      { sessionId: "Microsoft", viewCountTillNow: 6, viewTimeTillNow: 4.0 },
-      { sessionId: "Addidas", viewCountTillNow: 5, viewTimeTillNow: 3.5 },
-      { sessionId: "Disney", viewCountTillNow: 4, viewTimeTillNow: 3.0 },
-      { sessionId: "IAS", viewCountTillNow: 3, viewTimeTillNow: 2.5 },
-      { sessionId: "Facebook", viewCountTillNow: 6, viewTimeTillNow: 2.9 },
-      { sessionId: "Nike", viewCountTillNow: 5, viewTimeTillNow: 2.7 },
-      { sessionId: "META", viewCountTillNow: 4, viewTimeTillNow: 2.5 },
-      { sessionId: "FOOD CHAIN", viewCountTillNow: 3, viewTimeTillNow: 2.3 },
-      { sessionId: "EVENT", viewCountTillNow: 2, viewTimeTillNow: 2.1 },
-    ];
-    let tmp = logReportsdata.map((i) => {
-      return (
-        <Table.Row>
-          <Table.Cell>{i["sessionId"]}</Table.Cell>
-          <Table.Cell>{i["viewTimeTillNow"]}</Table.Cell>
-          <Table.Cell>{i["viewCountTillNow"]}</Table.Cell>
-        </Table.Row>
-      );
-    });
+        let scores_data_list = []
+        let total_scores = [0,0,0,0,0,0,0,0,0,0,0]
+        data['scene'].forEach(element => {
+          scores_data_list.push(element['garm'].map(item => item['score']))
+        });
+        scores_data_list.map(score_data=>{
+          score_data.map((score,idx)=>{
+            total_scores[idx]+= parseInt(score)
+          })
+        });
+        total_scores.map(score=>{
+          score = Math.floor(score/data['scene'].length)
+        })
 
-    this.setState({
-      logs: tmp,
-    });
-    // this.setState({chartData:data});
-  };
+        this.setState({
+          loading_view: false,
+        })
+        let tmp = data['viewability'].map((i) => {
+          return {
+            id: i['adName'],
+            viewability: i['deltaTime'],
+            cumulative: i['cumulativeViewTime'],
+            angle: i['angle'],
+            pixel: i['realEstate'],
+            viewable: i['isVisible'].toString(),
+          }
+        })
+        this.setState({
+          viewData: tmp,
+        })
 
-  // )
-  //     .catch(error => console.log(error));
-  // }
+        let tmp1 = data['scene'].map((i) => {
+          return {
+            id: i['objectName'],
+            segment_targeted: i['segment'].avoidance,
+            segment_avoided: i['segment'].targeting,
+          }
+        })
+        this.setState({
+          segdata: tmp1,
+        })
+        this.setState({
+          score: total_scores
+        })
+        console.log(this.state.score);
+      })
+      .catch((error) => console.log('error', error))
+  }
 }
 
-export default App;
+export default App
